@@ -17,7 +17,7 @@ export class CsvParser {
     options?: CsvParserOptions,
   ): Promise<any[]> {
     return new Promise((resolve, reject) => {
-      let results = [];
+      const results = [];
       try {
         fs.createReadStream(filePath)
           .pipe(csv(options))
@@ -36,7 +36,7 @@ export class CsvParser {
 
   async parse(filePath: string, options?: CsvParserOptions): Promise<any[]> {
     return new Promise((resolve, reject) => {
-      let results = [];
+      const results = [];
       try {
         fs.createReadStream(filePath)
           .pipe(this.csv(options))

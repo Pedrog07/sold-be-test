@@ -5,7 +5,7 @@ import {
   Logger,
   NestInterceptor,
 } from '@nestjs/common';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { Observable, catchError, map } from 'rxjs';
 
 @Injectable()
@@ -15,6 +15,7 @@ export class UsersInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
     const req = ctx.getRequest<Request>();
+    const res = ctx.getResponse<Response>();
     const requestId = Buffer.from(new Date().toISOString()).toString('base64');
 
     // log request
@@ -27,7 +28,9 @@ export class UsersInterceptor implements NestInterceptor {
       .pipe(
         map(async (value) => {
           // log successful response
-          this.logger.log(`(${requestId}) ${JSON.stringify(value)}`);
+          this.logger.log(
+            `(${requestId}) status: ${res.statusCode} ${JSON.stringify(value)}`,
+          );
           return value;
         }),
       )
@@ -35,7 +38,7 @@ export class UsersInterceptor implements NestInterceptor {
         catchError(async (err) => {
           // log error
           this.logger.error(`(${requestId}) ${JSON.stringify(err)}`);
-          return err;
+          throw err;
         }),
       );
   }

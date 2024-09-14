@@ -10,7 +10,9 @@ export class QueryUserDto extends PartialType(User) {
     description: `Number of users to return`,
     required: false,
   })
-  limit: number = 20;
+  @IsOptional()
+  @Type(() => Number)
+  limit: number;
 
   @ApiProperty({
     default: 1,
@@ -21,7 +23,7 @@ export class QueryUserDto extends PartialType(User) {
   @IsOptional()
   @Min(1)
   @Type(() => Number)
-  page: number = 1;
+  page: number;
 
   @ApiProperty({
     default: PaginatedResponseSortEnum.DESC,
@@ -32,17 +34,22 @@ export class QueryUserDto extends PartialType(User) {
   @IsEnum(PaginatedResponseSortEnum)
   @IsOptional()
   @Type(() => Number)
-  sort: PaginatedResponseSortEnum = PaginatedResponseSortEnum.DESC;
+  sort: PaginatedResponseSortEnum;
 
   @ApiProperty({
     default: 'createdAt',
     description: `User field to sort by`,
     required: false,
   })
-  sortBy: string = 'createdAt';
+  @IsOptional()
+  sortBy: string;
 
   constructor(args?: Partial<QueryUserDto>) {
     super();
+    this.limit = 20;
+    this.page = 1;
+    this.sort = PaginatedResponseSortEnum.ASC;
+    this.sortBy = 'createdAt';
     Object.assign(this, args);
   }
 }

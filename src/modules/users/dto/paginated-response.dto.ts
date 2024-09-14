@@ -5,6 +5,7 @@ import {
 } from '../interfaces/paginated-response.interface';
 
 export class PaginatedResponseDto<T> implements IPaginatedResponse<T> {
+  @ApiResponseProperty()
   data: T[];
 
   @ApiResponseProperty()
