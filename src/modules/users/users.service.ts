@@ -112,22 +112,24 @@ export class UsersService {
     let failedCount = 0,
       successCount = 0;
 
-    try {
-      const result = await this.userModel.bulkWrite(
-        users.map((user) => ({
-          insertOne: {
-            document: user,
+    if (users.length) {
+      try {
+        const result = await this.userModel.bulkWrite(
+          users.map((user) => ({
+            insertOne: {
+              document: user,
+            },
+          })),
+          {
+            ordered: false,
           },
-        })),
-        {
-          ordered: false,
-        },
-      );
+        );
 
-      successCount = result.insertedCount;
-    } catch (error) {
-      successCount = error.result.insertedCount;
-      failedCount = error.writeErrors.length;
+        successCount = result.insertedCount;
+      } catch (error) {
+        successCount = error.result.insertedCount;
+        failedCount = error.writeErrors.length;
+      }
     }
 
     return new UploadUsersResponseDto({

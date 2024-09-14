@@ -26,7 +26,7 @@ export class QueryUserDto extends PartialType(User) {
   page: number;
 
   @ApiProperty({
-    default: PaginatedResponseSortEnum.DESC,
+    default: PaginatedResponseSortEnum.ASC,
     description: `Sort order. Desc/Newest = -1, Asc/Oldest = 1`,
     enum: PaginatedResponseSortEnum,
     required: false,

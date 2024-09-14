@@ -79,13 +79,13 @@ export class User {
 
   @ApiProperty({ description: `User's phone number`, required: true })
   @Prop({ required: true })
-  @IsPhoneNumber()
+  @IsPhoneNumber('US')
   @IsNotEmpty()
   @Transform(nullishValueTransform)
   phone: string;
 
   @ApiProperty({ description: `User's provider`, required: false })
-  @Prop({ default: 'UNKNOWN' })
+  @Prop({ default: 'UNKNOWN', index: true })
   @IsString()
   @IsNotEmpty()
   @IsOptional()
@@ -113,3 +113,5 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.index({ firstName: 1, lastName: 1 });
